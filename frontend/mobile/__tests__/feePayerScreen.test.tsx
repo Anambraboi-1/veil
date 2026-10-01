@@ -64,6 +64,12 @@ beforeEach(() => {
   mockGetFeePayerInfo.mockReset();
 });
 
+// This is the app's first component test, so the first render in this file
+// pays for transforming React Native, expo-router and the screen's whole
+// import graph in a cold worker — comfortably past Jest's 5s default on a
+// cold CI runner, while the assertions themselves take milliseconds.
+jest.setTimeout(60_000);
+
 it('shows address, balance and a PRF derivation, with a QR of the fee-payer', async () => {
   mockGetFeePayerInfo.mockResolvedValue({ address: FEE_PAYER, source: 'prf' });
   const root = await render();
